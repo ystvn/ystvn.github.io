@@ -187,7 +187,7 @@ galatians32329.addEventListener('click', () => {
         "29 If you belong to Christ, then you are Abraham’s seed, and heirs according to the promise.";
 
     removeActive();
-    romans626.classList.add('active');
+    galatians32329.classList.add('active');
 })
 
 lesson.addEventListener('click', () => {
@@ -200,6 +200,7 @@ lesson.addEventListener('click', () => {
 function removeActive() {
     lessonPlan.style.display = 'none';
     verse.style.display = 'block';
+    lesson.classList.remove('active');
     dropdown.forEach(link => {
         link.classList.remove('active');
     });
