@@ -14,3 +14,22 @@ ol>li:before {
     content: "[" counter(list, lower-alpha) "] ";
     counter-increment: list;
 }
+
+.dropdown-item {
+    cursor: pointer;
+}
+
+.dropdown-item:hover {
+    background-color: #0D6EFD;
+    color: white;
+}
+
+.nav-link:hover {
+    background-color: #0D6EFD;
+    color: white;
+    cursor: pointer;
+}
+
+#lesson-text {
+    display: none;
+}
