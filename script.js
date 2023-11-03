@@ -23,8 +23,8 @@ const dropdown = document.querySelectorAll('.dropdown-item');
 const verse = document.getElementById('verse');
 const lessonPlan = document.getElementById('lesson-text');
 
-// Acts 2:37-41
-acts23741.addEventListener('click', () => {
+// Acts 8:9-13
+acts8913.addEventListener('click', () => {
     verse.innerHTML = "9 Now for some time a man named Simon had practiced sorcery in the city and amazed all the people of " +
         "Samaria. He boasted " +
         "that he was someone great, <br><br>" +
@@ -41,18 +41,18 @@ acts23741.addEventListener('click', () => {
         "he followed Philip " +
         "everywhere, astonished by the great signs and miracles he saw.";
     removeActive();
-    acts23741.classList.add('active');
+    acts8913.classList.add('active');
 })
 
-// Acts 8:9-13
-acts8913.addEventListener('click', () => {
+// Acts 2:37-41
+acts23741.addEventListener('click', () => {
     verse.innerHTML = "37 When the people heard this, they were cut to the heart and said to Peter and the other apostles, “Brothers, what shall we do?”<br><br>" +
         "38 Peter replied, “Repent and be baptized, every one of you, in the name of Jesus Christ for the forgiveness of your sins. And you will receive the gift of the Holy Spirit.<br><br>" +
         "39 The promise is for you and your children and for all who are far off—for all whom the Lord our God will call.<br><br>" +
         "40 With many other words he warned them; and he pleaded with them, “Save yourselves from this corrupt generation.”<br><br>" +
         "41 Those who accepted his message were baptized, and about three thousand were added to their number that day.";
     removeActive();
-    acts8913.classList.add('active');
+    acts23741.classList.add('active');
 })
 
 // Acts 8:26-39
