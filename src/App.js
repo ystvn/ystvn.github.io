@@ -1,24 +1,24 @@
-import logo from './logo.svg';
 import './App.css';
+import Navigation from './Components/Navigation.jsx';
+import TeamView from './Components/TeamView.jsx';
+import GameView from './Components/GameView.jsx';
+import Home from './Components/Home.jsx';
+// import YearMenu from './Components/YearMenu.jsx';
+
+import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
 
 function App() {
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <Router>
+      <Navigation />
+      <Routes>
+        <Route path="" element={<Home />} />
+        <Route path="/ak" element={<TeamView team="ak" />} />
+        <Route path="/nje" element={<TeamView team="nje" />} />
+        <Route path="/lt" element={<TeamView team="lt" />} />
+        <Route path="/game/:gameId" element={<GameView />} />
+      </Routes>
+    </Router>
   );
 }
 
