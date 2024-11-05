@@ -1,21 +1,25 @@
 import React, { useEffect, useState } from "react";
 import { Container } from "react-bootstrap";
 import { useParams } from "react-router-dom";
+import { fetchData } from "./Api";
 
 function GameView() {
     const { gameId } = useParams();
     const [data, setData] = useState(null);
 
     useEffect(() => {
-        fetch(`http://localhost:5000/game/${gameId}`)
-            .then(res => res.json())
-            .then(data => {
+        const getData = async () => {
+            try {
+                const data = await fetchData(`/game/${gameId}`);
                 if (data.game) {
                     setData(data.game);
-                    console.log(data.game)
+                    console.log(data.game);
                 }
-            })
-            .catch(error => console.error("Error fetching data:", error));
+            } catch (error) {
+                console.error("Error fetching data:", error);
+            }
+        };
+        getData();
     }, [gameId]);
 
     if (!data) {
