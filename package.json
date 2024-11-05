@@ -1,7 +1,6 @@
 {
   "homepage": "https://ystvn.github.io",
   "name": "stevens-games",
-  "proxy": "https://stevens-game-server.onrender.com",
   "version": "0.1.0",
   "private": true,
   "dependencies": {
