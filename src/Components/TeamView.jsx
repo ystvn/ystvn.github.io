@@ -10,6 +10,7 @@ function TeamView({ team }) {
         fetch(`https://stevens-games.onrender.com/${team}`)
             .then(res => res.json())
             .then(data => {
+                console.log(data)
                 setData(data);
             })
             .catch(error => console.error("Error fetching data:", error));

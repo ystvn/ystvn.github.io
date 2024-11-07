@@ -5,7 +5,7 @@ import GameView from './Components/GameView.jsx';
 import Home from './Components/Home.jsx';
 // import YearMenu from './Components/YearMenu.jsx';
 
-import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
+import { BrowserRouter as Router, Route, Routes, Navigate } from 'react-router-dom';
 
 function App() {
   return (
@@ -17,6 +17,7 @@ function App() {
         <Route path="/nje" element={<TeamView team="nje" />} />
         <Route path="/lt" element={<TeamView team="lt" />} />
         <Route path="/game/:gameId" element={<GameView />} />
+        <Route path="*" element={<Navigate to="/" replace />} />
       </Routes>
     </Router>
   );
