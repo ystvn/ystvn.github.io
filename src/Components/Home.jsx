@@ -7,7 +7,7 @@ function Home() {
     const [data, setData] = useState()
 
     useEffect(() => {
-        fetch("http://localhost:5000/")
+        fetch("https://stevens-games.onrender.com")
             .then(res => res.json())
             .then(data => {
                 setData(data);

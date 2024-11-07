@@ -1,22 +1,18 @@
 import React, { useState, useEffect } from 'react';
 import GameBubble from './GameBubble';
 import { Container } from 'react-bootstrap';
-import { fetchData } from './Api';
+// import { fetchData } from './Api';
 
 function TeamView({ team }) {
     const [data, setData] = useState(null);
 
     useEffect(() => {
-        const getData = async () => {
-            try {
-                const result = await fetchData(`/${team}`);
-                setData(result);
-            } catch (error) {
-                console.error("Error fetching data:", error);
-            }
-        };
-
-        getData();
+        fetch(`https://stevens-games.onrender.com/${team}`)
+            .then(res => res.json())
+            .then(data => {
+                setData(data);
+            })
+            .catch(error => console.error("Error fetching data:", error));
     }, [team]);
 
     if (!data) {
