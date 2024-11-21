@@ -36,7 +36,7 @@ function GameBubble({ t1, t2, date, gameId, youtubeLink }) {
                     <Container
                         className="d-flex flex-column justify-content-center"
                     >
-                        <div className="game-title h3 mb-0" style={{ color: 'black' }}>{t1} vs {t2}</div>
+                        <div className="game-title h3 mb-0" style={{ color: 'black' }}>{t1.toUpperCase()} vs {t2.toUpperCase()}</div>
                         <div className="game-date text-muted">{date}</div>
                     </Container>
                 </Container >
