@@ -4,7 +4,8 @@ import Button from 'react-bootstrap/Button';
 import Form from 'react-bootstrap/Form';
 import Modal from 'react-bootstrap/Modal';
 
-function Example() {
+function AddGameBox() {
+    // Add Games
     const [show, setShow] = useState(false);
     const [myTeam, setMyTeam] = useState("");
     const [otherTeam, setOtherTeam] = useState("");
@@ -26,7 +27,10 @@ function Example() {
         fetch(`https://stevens-games.onrender.com/getteams`)
             .then(res => res.json())
             .then(data => {
-                setTeamsList(data["games"]);
+                const filteredTeams = data["games"].filter(
+                    team => !["AUBURN KEBABS", "NEWJEANS ELITE", "LETEAM"].includes(team)
+                );
+                setTeamsList(filteredTeams);
             })
             .catch(error => console.error("Error fetching data:", error));
     }, []);
@@ -39,9 +43,32 @@ function Example() {
         const videoIdMatch = link.match(/(?:https?:\/\/)?(?:www\.)?youtube\.com\/.*v=([^&]+)|youtu\.be\/([^?&]+)/);
         const videoId = videoIdMatch ? videoIdMatch[1] || videoIdMatch[2] : null;
 
-        // Set thumbnail if video ID is valid, otherwise clear it
         if (videoId) {
-            setThumbnail(`https://img.youtube.com/vi/${videoId}/hqdefault.jpg`);
+            try {
+                fetch(`https://noembed.com/embed?url=https://www.youtube.com/watch?v=${videoId}`)
+                    .then(res => res.json())
+                    .then(data => {
+                        if (!data.error) {
+
+                            setMyTeam([(data.title).match(/^(.*)(?= vs)/)[0]]);
+                            setOtherTeam([(data.title).match(/(?<=vs\s)(.*?)(?=\s\d{1,2}\/\d{1,2}\/\d{4})/)[0]]);
+
+                            if ((data.title).match(/\d{1,2}\/\d{1,2}\/\d{4}/)) {
+                                const [day, month, year] = (data.title).match(/\d{1,2}\/\d{1,2}\/\d{4}/)[0].split('/');
+                                const formattedDate = `${year}-${month.padStart(2, '0')}-${day.padStart(2, '0')}`;
+                                setDate(formattedDate);
+                            } else {
+                                console.log("Date not found");
+                            }
+                        }
+
+                        setThumbnail(`https://img.youtube.com/vi/${videoId}/hqdefault.jpg`);
+                    })
+                    .catch();
+            } catch (error) {
+                console.error("Error sending data to the API:", error);
+            }
+
         } else {
             setThumbnail("");
         }
@@ -54,9 +81,10 @@ function Example() {
         setDate("");
         setGameLink("");
         setThumbnail("");
+        enteredPassword("");
     }
 
-    const handleSubmit = async (e) => {
+    const handleSubmit = (e) => {
         e.preventDefault();
 
         // Validate fields
@@ -75,53 +103,91 @@ function Example() {
             return;
         }
 
-        // Form is valid
+        openAuth();
+        handleClose();
+    };
+
+    // Authentication
+    const [showAuth, setShowAuth] = useState(false)
+    const [password, enteredPassword] = useState('')
+    const [correct, isCorrect] = useState(true)
+
+    const openAuth = () => setShowAuth(true);
+    const closeAuth = () => {
+        handleCancel();
+        setShowAuth(false);
+    };
+
+    const handleAuth = async (e) => {
+        fetch(`https://stevens-games.onrender.com/checkpassword/?password=${password}`)
+            .then(res => res.json())
+            .then(data => {
+                isCorrect(data.correctPassword)
+            })
+            .catch(error => console.error("Error fetching data:", error));
+
+        if (!correct) {
+            return;
+        }
+
         const gameData = {
-            team1_name: myTeam,
-            team2_name: otherTeam,
+            team1_name: myTeam[0],
+            team2_name: otherTeam[0],
             game_date: date,
             youtube_link: gameLink,
         };
 
+        closeAuth();
+        console.log(JSON.stringify(gameData))
+        // try {
+        //     const response = await fetch("https://stevens-games.onrender.com/addgame", {
+        //         method: "POST",
+        //         headers: {
+        //             "Content-Type": "application/json",
+        //         },
+        //         body: JSON.stringify(gameData),
+        //     });
 
-        try {
-            const response = await fetch("https://stevens-games.onrender.com/addgame", {
-                method: "POST",
-                headers: {
-                    "Content-Type": "application/json",
-                },
-                body: JSON.stringify(gameData),
-            });
+        //     const result = await response.json();
 
-            const result = await response.json();
-
-            if (response.ok) {
-                console.log("Game added successfully!");
-            } else {
-                console.log(`Error: ${result.error}`);
-            }
-        } catch (error) {
-            console.error("Error sending data to the API:", error);
-        }
-
-    };
+        //     if (response.ok) {
+        //         console.log("Game added successfully!");
+        //     } else {
+        //         console.log(`Error: ${result.error}`);
+        //     }
+        // } catch (error) {
+        //     console.error("Error sending data to the API:", error);
+        // }
+    }
 
     return (
         <>
             <Button className="ms-auto me-2 shadow-none" variant="warning" size="large" onClick={handleShow}>+</Button>
 
+            {/* Adding Games */}
             <Modal show={show} onHide={handleCancel}>
                 <Modal.Header closeButton>
                     <Modal.Title>Add a Game</Modal.Title>
                 </Modal.Header>
                 <Modal.Body>
                     <Form>
+                        <Form.Label>Game Link</Form.Label>
+                        <Form.Control
+                            type="text"
+                            value={gameLink}
+                            onChange={handleGameLinkChange}
+                            style={{
+                                border: errors.gameLink ? "2px solid red" : "2px solid #D3D3D3",
+                                borderRadius: "8px",
+                            }}
+
+                        />
                         <Form.Label>My Team</Form.Label>
                         <Typeahead
                             id="basic-typeahead-myteam"
                             labelKey="name"
                             onChange={setMyTeam}
-                            options={["Auburn Kebabs", "NewJeans Elite", "LeTeam"]}
+                            options={["AUBURN KEBABS", "NEWJEANS ELITE", "LETEAM"]}
                             selected={myTeam}
                             style={{
                                 border: errors.myTeam ? "2px solid red" : "2px solid #D3D3D3",
@@ -154,18 +220,6 @@ function Example() {
                                 borderRadius: "8px",
                             }}
                         />
-
-                        <Form.Label>Game Link</Form.Label>
-                        <Form.Control
-                            type="text"
-                            value={gameLink}
-                            onChange={handleGameLinkChange}
-                            style={{
-                                border: errors.gameLink ? "2px solid red" : "2px solid #D3D3D3",
-                                borderRadius: "8px",
-                            }}
-
-                        />
                         <br />
                         {thumbnail && (
                             <div className="mt-2">
@@ -187,8 +241,40 @@ function Example() {
                     </Button>
                 </Modal.Footer>
             </Modal>
+
+            {/* Authenticator */}
+            <Modal show={showAuth} onHide={closeAuth}>
+                <Modal.Header closeButton>
+                    <Modal.Title>Authentication</Modal.Title>
+                </Modal.Header>
+                <Modal.Body>
+                    <Form>
+                        <Form.Label>Enter Password</Form.Label>
+                        <Form.Control
+                            type="password"
+                            value={password}
+                            onChange={(e) => enteredPassword(e.target.value)}
+                            style={{
+                                border: correct ? "2px solid #D3D3D3" : "2px solid red",
+                                borderRadius: "8px",
+                            }}
+                        />
+                    </Form>
+                </Modal.Body>
+                <Modal.Footer>
+                    <Button variant="secondary" onClick={closeAuth}>
+                        Cancel
+                    </Button>
+                    <Button variant="primary" onClick={handleAuth}>
+                        Submit
+                    </Button>
+                </Modal.Footer>
+            </Modal>
+
+
         </>
     );
 }
 
-export default Example;
+
+export default AddGameBox;
