@@ -35,7 +35,7 @@ function AddGameBox() {
             .catch(error => console.error("Error fetching data:", error));
     }, []);
 
-    const handleGameLinkChange = (e) => {
+    const handleGameLinkChange = async (e) => {
         const link = e.target.value;
         setGameLink(link);
 
@@ -45,7 +45,7 @@ function AddGameBox() {
 
         if (videoId) {
             try {
-                fetch(`https://noembed.com/embed?url=https://www.youtube.com/watch?v=${videoId}`)
+                await fetch(`https://noembed.com/embed?url=https://www.youtube.com/watch?v=${videoId}`)
                     .then(res => res.json())
                     .then(data => {
                         if (!data.error) {
