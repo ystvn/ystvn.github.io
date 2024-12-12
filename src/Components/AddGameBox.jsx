@@ -138,26 +138,25 @@ function AddGameBox() {
         };
 
         closeAuth();
-        console.log(JSON.stringify(gameData))
-        // try {
-        //     const response = await fetch("https://stevens-games.onrender.com/addgame", {
-        //         method: "POST",
-        //         headers: {
-        //             "Content-Type": "application/json",
-        //         },
-        //         body: JSON.stringify(gameData),
-        //     });
+        try {
+            const response = await fetch("https://stevens-games.onrender.com/addgame", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                },
+                body: JSON.stringify(gameData),
+            });
 
-        //     const result = await response.json();
+            const result = await response.json();
 
-        //     if (response.ok) {
-        //         console.log("Game added successfully!");
-        //     } else {
-        //         console.log(`Error: ${result.error}`);
-        //     }
-        // } catch (error) {
-        //     console.error("Error sending data to the API:", error);
-        // }
+            if (response.ok) {
+                console.log("Game added successfully!");
+            } else {
+                console.log(`Error: ${result.error}`);
+            }
+        } catch (error) {
+            console.error("Error sending data to the API:", error);
+        }
     }
 
     return (
