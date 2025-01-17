@@ -2,9 +2,10 @@ import React from 'react';
 import Navbar from 'react-bootstrap/Navbar';
 import Button from 'react-bootstrap/Button';
 import { NavLink, useLocation } from 'react-router-dom';
-import AddGameBox from './AddGameBox.jsx'
+import AddGameBox from './AddGameBox.jsx';
+import SearchBar from './SearchBar.jsx';
 
-function Navigation() {
+function Navigation({ onSearch }) {
     const location = useLocation();
 
     const renderButton = (to, label, variant, alwaysInactive = false) => (
@@ -17,13 +18,17 @@ function Navigation() {
 
     return (
         <Navbar className="gap-2 ps-2 d-flex align-items-center">
-            <div className="d-flex gap-2">
+            <div className="d-flex gap-2 flex-nowrap">
                 {renderButton("/", "All Games", "light", true)}
                 {renderButton("/ak", "Auburn Kebabs", "outline-primary")}
                 {renderButton("/nje", "NewJeans Elite", "outline-success")}
                 {renderButton("/lt", "LeTeam", "outline-info")}
             </div>
-            <AddGameBox />
+
+            <div className="ms-auto d-flex gap-2 align-items-center">
+                <SearchBar onSearch={(e) => onSearch(e.target.value)} />
+                <AddGameBox />
+            </div>
         </Navbar>
     );
 }

@@ -1,20 +1,22 @@
 import React, { useState, useEffect } from 'react';
 import GameBubble from './GameBubble';
 import { Container } from 'react-bootstrap';
-// import { fetchData } from './Api';
 
-function TeamView({ team }) {
+function TeamView({ team, searchQuery }) {
     const [data, setData] = useState(null);
 
     useEffect(() => {
         fetch(`https://stevens-games.onrender.com/${team}`)
-            .then(res => res.json())
-            .then(data => {
-                console.log(data)
+            .then((res) => res.json())
+            .then((data) => {
                 setData(data);
             })
-            .catch(error => console.error("Error fetching data:", error));
+            .catch((error) => console.error('Error fetching data:', error));
     }, [team]);
+
+    const filteredGames = data?.games?.filter((game) =>
+        game.team2.toLowerCase().includes(searchQuery)
+    );
 
     if (!data) {
         return <Container>Loading...</Container>;
@@ -22,15 +24,15 @@ function TeamView({ team }) {
 
     return (
         <div>
-            {data.games && data.games.length > 0 ? (
-                data.games.map((game) => (
+            {filteredGames && filteredGames.length > 0 ? (
+                filteredGames.map((game) => (
                     <GameBubble
-                        key={game.game_id} // Use the game_id as the unique key
-                        t1={game.team1} // Team 1 name
-                        t2={game.team2} // Team 2 name
-                        date={new Date(game.date).toLocaleDateString()} // Format the date
-                        gameId={game.game_id} // Game ID
-                        youtubeLink={game.youtube_link} // YouTube link
+                        key={game.game_id}
+                        t1={game.team1}
+                        t2={game.team2}
+                        date={new Date(game.date).toLocaleDateString()}
+                        gameId={game.game_id}
+                        youtubeLink={game.youtube_link}
                     />
                 ))
             ) : (
