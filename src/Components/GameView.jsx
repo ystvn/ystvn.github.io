@@ -28,7 +28,7 @@ function GameView() {
             <h5>{new Date(data.g_date).toLocaleDateString()}</h5>
             <div className="ratio ratio-16x9">
                 <iframe
-                    src={data.youtube_link} // Use the fetched YouTube link
+                    src={data.youtube_link}
                     title={data[1] + ' ' + data[2]}
                     allowFullScreen
                 ></iframe>

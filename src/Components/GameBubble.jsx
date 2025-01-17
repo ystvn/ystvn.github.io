@@ -19,17 +19,17 @@ function GameBubble({ t1, t2, date, gameId, youtubeLink }) {
         <Container>
             <Link to={`/game/${gameId}`} style={{ textDecoration: 'none' }}>
                 <Container style={{
-                    border: '2px solid #D3D3D3', // Change 'red' to your desired color
+                    border: '2px solid #D3D3D3',
                     borderRadius: '30px'
                 }}
                     className="d-flex gap-5 px-5 py-3 my-3">
 
                     <img src={thumbnailUrl} alt="" style={{
-                        width: '200px', // Set the width as you prefer
-                        height: 'auto', // Maintain aspect ratio
-                        maxHeight: '112px', // Set the max height to control cropping, based on the 16:9 aspect ratio
-                        objectFit: 'cover', // This will crop the top and bottom to ensure the image fills the area
-                        borderRadius: '8px' // Optional: Add border radius for rounded corners
+                        width: '200px',
+                        height: 'auto',
+                        maxHeight: '112px',
+                        objectFit: 'cover',
+                        borderRadius: '8px'
                     }} />
 
 
