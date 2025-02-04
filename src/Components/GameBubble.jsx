@@ -10,6 +10,8 @@ function GameBubble({ game }) {
     const youtubeLink = game.youtube_link
     const score = game.score
 
+    console.log(game)
+
     const getYouTubeThumbnail = (url) => {
         const match = url.match(/embed\/([^/?]+)/);
         if (match) {
