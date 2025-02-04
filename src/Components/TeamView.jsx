@@ -1,28 +1,30 @@
 import React, { useState, useEffect } from 'react';
 import GameBubble from './GameBubble';
 import { Container } from 'react-bootstrap';
+import { useParams } from "react-router-dom";
 
-function TeamView({ team, searchQuery }) {
+function TeamView({ searchQuery }) {
+    const { team = "" } = useParams();
     const [data, setData] = useState(null);
     const [loading, setLoading] = useState(true);
 
     useEffect(() => {
+        setLoading(true);
         const cachedData = localStorage.getItem(`team-${team}`);
 
         if (cachedData) {
             setData(JSON.parse(cachedData));
             setLoading(false);
-        } else {
-            setLoading(true);
-            fetch(`https://stevens-games.onrender.com/${team}`)
-                .then((res) => res.json())
-                .then((fetchedData) => {
-                    localStorage.setItem(`team-${team}`, JSON.stringify(fetchedData));
-                    setData(fetchedData);
-                })
-                .catch((error) => console.error('Error fetching data:', error))
-                .finally(() => setLoading(false));
         }
+        fetch(`https://stevens-games.onrender.com/${team}`)
+            .then((res) => res.json())
+            .then((fetchedData) => {
+                localStorage.setItem(`team-${team}`, JSON.stringify(fetchedData));
+                setData(fetchedData);
+            })
+            .catch((error) => console.error('Error fetching data:', error))
+            .finally(() => setLoading(false));
+
     }, [team]);
 
     const filteredGames = data?.games?.filter((game) =>
@@ -37,14 +39,7 @@ function TeamView({ team, searchQuery }) {
         <div>
             {filteredGames && filteredGames.length > 0 ? (
                 filteredGames.map((game) => (
-                    <GameBubble
-                        key={game.game_id}
-                        t1={game.team1}
-                        t2={game.team2}
-                        date={new Date(game.date).toLocaleDateString()}
-                        gameId={game.game_id}
-                        youtubeLink={game.youtube_link}
-                    />
+                    <GameBubble game={game} />
                 ))
             ) : (
                 <Container>No games found.</Container>

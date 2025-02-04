@@ -12,12 +12,16 @@ function AddGameBox() {
     const [teamsList, setTeamsList] = useState([])
     const [date, setDate] = useState("");
     const [gameLink, setGameLink] = useState("");
+    const [gameScore, setGameScore] = useState("")
+    const [myTeamScore, setMyTeamScore] = useState("")
+    const [otherTeamScore, setOtherTeamScore] = useState("")
     const [thumbnail, setThumbnail] = useState("");
     const [errors, setErrors] = useState({
         myTeam: false,
         otherTeam: false,
         date: false,
         gameLink: false,
+        gameScore: false
     });
 
     const handleClose = () => setShow(false);
@@ -74,12 +78,22 @@ function AddGameBox() {
         }
     };
 
+    const handleScoreChange = async (e) => {
+        const score = e.target.value;
+        setGameScore(score)
+        setMyTeamScore(score.match(/(^\d+)/))
+        setOtherTeamScore(score.match(/(\d+$)/))
+    }
+
     const handleCancel = () => {
         handleClose();
         setMyTeam("");
         setOtherTeam("");
         setDate("");
         setGameLink("");
+        setGameScore("");
+        setMyTeamScore("")
+        setOtherTeamScore("")
         setThumbnail("");
         enteredPassword("");
     }
@@ -93,6 +107,7 @@ function AddGameBox() {
             otherTeam: otherTeam.length === 0,
             date: date === "",
             gameLink: gameLink === "",
+            gameScore: gameScore === ""
         };
 
         setErrors(newErrors);
@@ -110,7 +125,7 @@ function AddGameBox() {
     // Authentication
     const [showAuth, setShowAuth] = useState(false)
     const [password, enteredPassword] = useState('')
-    const [correct, isCorrect] = useState(true)
+    const [correct, isCorrect] = useState(false)
 
     const openAuth = () => setShowAuth(true);
     const closeAuth = () => {
@@ -135,6 +150,8 @@ function AddGameBox() {
             team2_name: otherTeam[0],
             game_date: date,
             youtube_link: gameLink,
+            team1_score: myTeamScore[0],
+            team2_score: otherTeamScore[0]
         };
 
         closeAuth();
@@ -151,6 +168,13 @@ function AddGameBox() {
 
             if (response.ok) {
                 console.log("Game added successfully!");
+
+                const cachedData = localStorage.getItem(`team-${myTeam[0]}`);
+                if (cachedData) {
+                    const updatedData = JSON.parse(cachedData);
+                    updatedData.games.push(gameData);
+                    localStorage.setItem(`team-${myTeam[0]}`, JSON.stringify(updatedData));
+                }
             } else {
                 console.log(`Error: ${result.error}`);
             }
@@ -170,7 +194,7 @@ function AddGameBox() {
                 </Modal.Header>
                 <Modal.Body>
                     <Form>
-                        <Form.Label>Game Link</Form.Label>
+                        <Form.Label>Game Link (e.g. www.youtube.com/watch?v=mbR0vVUrIoY)</Form.Label>
                         <Form.Control
                             type="text"
                             value={gameLink}
@@ -207,6 +231,18 @@ function AddGameBox() {
                                 border: errors.otherTeam ? "2px solid red" : "2px solid #D3D3D3",
                                 borderRadius: "8px",
                             }}
+                        />
+
+                        <Form.Label>Score (e.g. 49 - 48)</Form.Label>
+                        <Form.Control
+                            type="text"
+                            value={gameScore}
+                            onChange={handleScoreChange}
+                            style={{
+                                border: errors.gameLink ? "2px solid red" : "2px solid #D3D3D3",
+                                borderRadius: "8px",
+                            }}
+
                         />
 
                         <Form.Label>Date</Form.Label>

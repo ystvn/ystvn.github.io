@@ -2,7 +2,13 @@ import React, { useState } from "react";
 import { Container } from "react-bootstrap";
 import { Link } from "react-router-dom";
 
-function GameBubble({ t1, t2, date, gameId, youtubeLink }) {
+function GameBubble({ game }) {
+    const gameId = game.game_id
+    const t1 = game.team1;
+    const t2 = game.team2;
+    const date = new Date(game.date).toLocaleDateString()
+    const youtubeLink = game.youtube_link
+    const score = game.score
 
     const getYouTubeThumbnail = (url) => {
         const match = url.match(/embed\/([^/?]+)/);
@@ -25,9 +31,9 @@ function GameBubble({ t1, t2, date, gameId, youtubeLink }) {
                     className="d-flex gap-5 px-5 py-3 my-3">
 
                     <img src={thumbnailUrl} alt="" style={{
-                        width: '200px',
+                        width: '30%',
                         height: 'auto',
-                        maxHeight: '112px',
+                        maxHeight: '120px',
                         objectFit: 'cover',
                         borderRadius: '8px'
                     }} />
@@ -39,6 +45,17 @@ function GameBubble({ t1, t2, date, gameId, youtubeLink }) {
                         <div className="game-title h3 mb-0" style={{ color: 'black' }}>{t1.toUpperCase()} vs {t2.toUpperCase()}</div>
                         <div className="game-date text-muted">{date}</div>
                     </Container>
+
+                    <div
+                        className="score h3 mb-0 d-flex align-items-center"
+                        style={{
+                            color: 'black',
+                            whiteSpace: 'nowrap',
+                            marginLeft: 'auto'
+                        }}
+                    >
+                        {score}
+                    </div>
                 </Container >
 
             </Link >
