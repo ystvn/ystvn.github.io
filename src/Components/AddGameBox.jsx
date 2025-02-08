@@ -101,13 +101,15 @@ function AddGameBox() {
     const handleSubmit = (e) => {
         e.preventDefault();
 
+        const scoreRegex = /^\d+\s*-\s*\d+$/;
+
         // Validate fields
         const newErrors = {
             myTeam: myTeam.length === 0,
             otherTeam: otherTeam.length === 0,
             date: date === "",
             gameLink: gameLink === "",
-            gameScore: gameScore === ""
+            gameScore: gameScore !== "" && !scoreRegex.test(gameScore)
         };
 
         setErrors(newErrors);
@@ -125,25 +127,26 @@ function AddGameBox() {
     // Authentication
     const [showAuth, setShowAuth] = useState(false)
     const [password, enteredPassword] = useState('')
-    const [correct, isCorrect] = useState(false)
+    const [correct, isCorrect] = useState(true)
 
     const openAuth = () => setShowAuth(true);
     const closeAuth = () => {
         handleCancel();
         setShowAuth(false);
+        isCorrect(true)
     };
 
-    const handleAuth = async (e) => {
+    const handleAuth = async () => {
         fetch(`https://stevens-games.onrender.com/checkpassword/?password=${password}`)
             .then(res => res.json())
             .then(data => {
+                if (data.correctPassword === undefined) {
+                    return;
+                }
+
                 isCorrect(data.correctPassword)
             })
             .catch(error => console.error("Error fetching data:", error));
-
-        if (!correct) {
-            return;
-        }
 
         const gameData = {
             team1_name: myTeam[0],
@@ -153,6 +156,10 @@ function AddGameBox() {
             team1_score: myTeamScore[0],
             team2_score: otherTeamScore[0]
         };
+
+        if (!correct) {
+            return;
+        }
 
         closeAuth();
         try {
@@ -168,13 +175,6 @@ function AddGameBox() {
 
             if (response.ok) {
                 console.log("Game added successfully!");
-
-                const cachedData = localStorage.getItem(`team-${myTeam[0]}`);
-                if (cachedData) {
-                    const updatedData = JSON.parse(cachedData);
-                    updatedData.games.push(gameData);
-                    localStorage.setItem(`team-${myTeam[0]}`, JSON.stringify(updatedData));
-                }
             } else {
                 console.log(`Error: ${result.error}`);
             }
@@ -211,7 +211,7 @@ function AddGameBox() {
                             labelKey="name"
                             onChange={setMyTeam}
                             options={["AUBURN KEBABS", "NEWJEANS ELITE", "LETEAM"]}
-                            selected={myTeam}
+                            selected={myTeam || []}
                             style={{
                                 border: errors.myTeam ? "2px solid red" : "2px solid #D3D3D3",
                                 borderRadius: "8px",
@@ -224,7 +224,7 @@ function AddGameBox() {
                             labelKey="name"
                             onChange={setOtherTeam}
                             options={teamsList ? teamsList : []}
-                            selected={otherTeam}
+                            selected={otherTeam || []}
                             allowNew
                             newSelectionPrefix="Add a new team: "
                             style={{
