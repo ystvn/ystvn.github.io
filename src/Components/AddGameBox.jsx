@@ -7,8 +7,8 @@ import Modal from 'react-bootstrap/Modal';
 function AddGameBox() {
     // Add Games
     const [show, setShow] = useState(false);
-    const [myTeam, setMyTeam] = useState("");
-    const [otherTeam, setOtherTeam] = useState("");
+    const [myTeam, setMyTeam] = useState([]);
+    const [otherTeam, setOtherTeam] = useState([]);
     const [teamsList, setTeamsList] = useState([])
     const [date, setDate] = useState("");
     const [gameLink, setGameLink] = useState("");
