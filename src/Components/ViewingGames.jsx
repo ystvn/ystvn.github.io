@@ -12,7 +12,6 @@ function GameView() {
             .then(data => {
                 if (data.game) {
                     setData(data.game);
-                    console.log(data.game)
                 }
             })
             .catch(error => console.error("Error fetching data:", error));

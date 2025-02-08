@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Container } from "react-bootstrap";
 import { Link } from "react-router-dom";
 
@@ -19,7 +19,11 @@ function GameBubble({ game }) {
         return null;
     };
 
-    const [thumbnailUrl] = useState(getYouTubeThumbnail(youtubeLink));
+    const [thumbnailUrl, setThumbnailUrl] = useState(getYouTubeThumbnail(youtubeLink));
+
+    useEffect(() => {
+        setThumbnailUrl(getYouTubeThumbnail(youtubeLink));
+    }, [youtubeLink]);
 
     return (
         <Container>

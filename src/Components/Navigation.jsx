@@ -20,9 +20,9 @@ function Navigation({ onSearch }) {
         <Navbar className="gap-2 ps-2 d-flex align-items-center">
             <div className="d-flex gap-2 flex-nowrap">
                 {renderButton("/", "All Games", "light", true)}
-                {renderButton("/ak", "Auburn Kebabs", "outline-primary")}
-                {renderButton("/nje", "NewJeans Elite", "outline-success")}
-                {renderButton("/lt", "LeTeam", "outline-info")}
+                {renderButton("/auburnkebabs", "Auburn Kebabs", "outline-primary")}
+                {renderButton("/newjeanselite", "NewJeans Elite", "outline-success")}
+                {renderButton("/leteam", "LeTeam", "outline-info")}
             </div>
 
             <div className="ms-auto d-flex gap-2 align-items-center">

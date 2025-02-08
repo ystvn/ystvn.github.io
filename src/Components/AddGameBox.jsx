@@ -13,8 +13,8 @@ function AddGameBox() {
     const [date, setDate] = useState("");
     const [gameLink, setGameLink] = useState("");
     const [gameScore, setGameScore] = useState("")
-    const [myTeamScore, setMyTeamScore] = useState("")
-    const [otherTeamScore, setOtherTeamScore] = useState("")
+    const [myTeamScore, setMyTeamScore] = useState(0)
+    const [otherTeamScore, setOtherTeamScore] = useState(0)
     const [thumbnail, setThumbnail] = useState("");
     const [errors, setErrors] = useState({
         myTeam: false,
