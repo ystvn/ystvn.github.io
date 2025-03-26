@@ -12,9 +12,11 @@ function GameView() {
             .then(data => {
                 if (data.game) {
                     setData(data.game);
+                    document.title = `${data.game.team1} vs ${data.game.team2}`;
                 }
             })
             .catch(error => console.error("Error fetching data:", error));
+
     }, [gameId]);
 
     if (!data) {

@@ -127,7 +127,7 @@ function AddGameBox() {
     // Authentication
     const [showAuth, setShowAuth] = useState(false)
     const [password, enteredPassword] = useState('')
-    const [correct, isCorrect] = useState(true)
+    const [correct, isCorrect] = useState(false)
 
     const openAuth = () => setShowAuth(true);
     const closeAuth = () => {
