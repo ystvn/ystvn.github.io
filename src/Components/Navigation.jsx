@@ -17,7 +17,7 @@ function Navigation({ onSearch }) {
     );
 
     return (
-        <Navbar className="gap-2 ps-2 d-flex align-items-center">
+        <Navbar className="nav nav-pills flex-column flex-sm-row">
             <div className="d-flex gap-2 flex-nowrap">
                 {renderButton("/", "All Games", "light", true)}
                 {renderButton("/auburnkebabs", "Auburn Kebabs", "outline-primary")}

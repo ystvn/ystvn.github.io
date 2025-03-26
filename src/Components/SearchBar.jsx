@@ -4,14 +4,14 @@ import Col from 'react-bootstrap/Col';
 
 function SearchBar({ onSearch }) {
     return (
-        <Col xs="auto">
+        <Form className="d-flex">
             <Form.Control
                 type="text"
                 placeholder="Search"
                 className="me-2"
                 onChange={onSearch}
             />
-        </Col>
+        </Form>
     );
 }
 
